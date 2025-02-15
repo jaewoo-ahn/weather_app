@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchWeatherData } from "../api/useWeather";
+import useWeather from "../hooks/weather";
 
 const Home = () => {
   const [lat, setLat] = useState<number>(0);
@@ -18,15 +18,17 @@ const Home = () => {
           console.error("Error getting location:", error);
         }
       );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
     }
   };
 
   useEffect(() => {
     currentLocation();
-    fetchWeatherData(lat, lon);
   }, [lat, lon]);
+
+  const { currentWeather, loading, error } = useWeather(lat, lon);
+
+  console.log(currentWeather?.temp);
+  console.log(currentWeather?.icon);
 
   return (
     <div>
