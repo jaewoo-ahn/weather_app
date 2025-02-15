@@ -5,3 +5,11 @@ export interface WeatherData {
   windSpeed: number;
   icon: string;
 }
+
+export interface HourlyWeather {
+  time: string;
+  temp: number;
+  humidity: number;
+  windSpeed: number;
+  icon: string;
+}

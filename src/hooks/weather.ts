@@ -9,7 +9,7 @@ const useWeather = (lat: number, lon: number) => {
   const [currentWeather, setCurrentWeather] = useState<WeatherData | null>(
     null
   );
-
+  const [hourlyWeather, setHourlyWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -20,7 +20,7 @@ const useWeather = (lat: number, lon: number) => {
       setLoading(true);
       setError(null);
       try {
-        const [currentRes] = await Promise.all([
+        const [currentRes, forecastRes] = await Promise.all([
           axios.get(`${BASE_URL}/weather`, {
             params: {
               lat,
@@ -30,7 +30,17 @@ const useWeather = (lat: number, lon: number) => {
               lang: "kr",
             },
           }),
+          axios.get(`${BASE_URL}/forecast`, {
+            params: {
+              lat,
+              lon,
+              appid: API_KEY,
+              units: "metric",
+              lang: "kr",
+            },
+          }),
         ]);
+
         const currentData = currentRes.data;
         setCurrentWeather({
           temp: currentData.main.temp,
@@ -39,6 +49,15 @@ const useWeather = (lat: number, lon: number) => {
           windSpeed: currentData.wind.speed,
           icon: `https://openweathermap.org/img/wn/${currentData.weather[0].icon}@2x.png`,
         });
+        const hourlyData = forecastRes.data.list.map((item: any) => ({
+          time: new Date(item.dt * 1000).getHours() + "시",
+          temp: item.main.temp,
+          humidity: item.main.humidity,
+          windSpeed: item.wind.speed,
+          icon: `https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`,
+        }));
+
+        setHourlyWeather(hourlyData);
       } catch (err) {
         setError("오류 발생");
       } finally {
@@ -47,7 +66,7 @@ const useWeather = (lat: number, lon: number) => {
     };
     fetchWeatherData();
   }, [lat, lon]);
-  return { currentWeather, loading, error };
+  return { currentWeather, hourlyWeather, loading, error };
 };
 
 export default useWeather;
