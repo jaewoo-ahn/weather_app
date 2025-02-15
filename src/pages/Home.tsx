@@ -25,11 +25,12 @@ const Home = () => {
     currentLocation();
   }, [lat, lon]);
 
-  const { currentWeather, hourlyWeather, loading, error } = useWeather(
-    lat,
-    lon
-  );
+  const { currentWeather, hourlyWeather, dailyWeather, loading, error } =
+    useWeather(lat, lon);
+
+  console.log(currentWeather);
   console.log(hourlyWeather);
+  console.log(dailyWeather);
 
   return (
     <div>

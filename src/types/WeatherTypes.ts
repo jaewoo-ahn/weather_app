@@ -13,3 +13,10 @@ export interface HourlyWeather {
   windSpeed: number;
   icon: string;
 }
+
+export interface DailyWeather {
+  date: string;
+  minTemp: number;
+  maxTemp: number;
+  icon: string;
+}
