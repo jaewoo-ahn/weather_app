@@ -4,6 +4,9 @@ export interface WeatherData {
   humidity: number;
   windSpeed: number;
   icon: string;
+  fillLike: number;
+  sunset: string;
+  windDirection: string;
 }
 
 export interface HourlyWeather {
@@ -12,11 +15,17 @@ export interface HourlyWeather {
   humidity: number;
   windSpeed: number;
   icon: string;
+  pop: number;
+  rain: number;
 }
-
 export interface DailyWeather {
   date: string;
   minTemp: number;
   maxTemp: number;
-  icon: string;
+  morningTemp: number;
+  afternoonTemp: number;
+  iconMorning: string;
+  iconAfternoon: string;
+  morningRain: number;
+  afternoonRain: number;
 }
